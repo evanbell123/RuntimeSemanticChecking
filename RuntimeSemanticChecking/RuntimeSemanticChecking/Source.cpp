@@ -5,7 +5,7 @@
 #include <iomanip>
 //#define NDEBUG
 //#include <assert.h>
-#include <stdexcept>
+//#include <stdexcept>
 using namespace std;
 
 
@@ -16,13 +16,13 @@ void populateVector(vector<int> &intVec, unsigned int n);
 
 /*
 return time taken to display a vector of n elements
-WITH assertion that checks for out of bound memory reference
+WITH checks for out of bound memory reference
 */
-double displayWithException(unsigned int n);
+double displayWithChecking(unsigned int n);
 
 /*
 return time taken to display a vector of n elements
-WITH OUT assertion that checks for out of bound memory reference
+WITH OUT checks for out of bound memory reference
 */
 double display(unsigned int n);
 
@@ -39,7 +39,7 @@ void main()
 	{
 		totalElements->push_back(i);
 
-		exceptionDurations->push_back(displayWithException(i));
+		exceptionDurations->push_back(displayWithChecking(i));
 
 		durations->push_back(display(i));
 
@@ -47,7 +47,7 @@ void main()
 
 	}
 
-	cout << setw(2) << "# of elements" << setw(20 - 2) << "With Exceptions" << setw(20) << "Without Exceptions" << endl;
+	cout << setw(2) << "# of elements" << setw(20 - 2) << "With Checking" << setw(20) << "Without Checking" << endl;
 
 	for (unsigned int i = 0; i < totalElements->size(); i++)
 	{
@@ -73,7 +73,7 @@ void main()
 
 
 
-double displayWithException(unsigned int n)
+double displayWithChecking(unsigned int n)
 {
 	vector<int> intVec;
 
@@ -83,7 +83,7 @@ double displayWithException(unsigned int n)
 
 	start = clock();
 
-	//Display Vector with exception checking for out of bound memory reference
+	//Display Vector with checking for out of bound memory reference
 	for (unsigned int i = 0; i <= intVec.size(); i++)
 	{
 		//assert(i >= 0 && i < intVec.size());
@@ -119,7 +119,6 @@ double display(unsigned int n)
 
 	start = clock();
 
-	//Display Vector with assertion checking for out of bound memory reference
 	for (unsigned int i = 0; i < intVec.size(); i++)
 	{
 		cout << intVec[i] << endl;
