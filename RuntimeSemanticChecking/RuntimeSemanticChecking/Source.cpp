@@ -1,26 +1,28 @@
 #include <iostream>
 #include <vector>
-#include <iterator>
 #include <ctime>
 #include <iomanip>
-//#define NDEBUG
-//#include <assert.h>
-//#include <stdexcept>
 using namespace std;
 
 
 /*
-vector populated with n integers
+populate vector with n integers
 */
 void populateVector(vector<int> &intVec, unsigned int n);
 
 /*
-return time taken to display a vector of n elements
+Populate vector with n elements
+
+Return time taken to display a vector of n elements
 WITH checks for out of bound memory reference
+If an out of bound memory reference occurs,
+it return -1
 */
 double displayWithChecking(unsigned int n);
 
 /*
+Populate vector with n elements
+
 return time taken to display a vector of n elements
 WITH OUT checks for out of bound memory reference
 */
@@ -28,45 +30,50 @@ double display(unsigned int n);
 
 void main()
 {
+	/*
+	Store # of elements for each vector that is tested
+	*/
 	vector<unsigned int> *totalElements = new vector<unsigned int>;
-	vector<double> *exceptionDurations = new vector<double>;
+
+	/*
+	Store the time taken (in seconds) to output all elements
+	for each vector that is tested WITH runtime sematic error checking
+	*/
+	vector<double> *checkedDurations = new vector<double>;
+
+	/*
+	Store the time taken (in seconds) to output all elements
+	for each vector that is tested WITH OUT runtime sematic error checking
+	*/
 	vector<double> *durations = new vector<double>;
 
-
-
-
-	for (unsigned int i = 1000; i <= 625000; i *= 5)
+	/*
+	Test with datasets of different sizes
+	*/
+	for (unsigned int i = 5000; i <= 3125000; i *= 5)
 	{
 		totalElements->push_back(i);
 
-		exceptionDurations->push_back(displayWithChecking(i));
+		checkedDurations->push_back(displayWithChecking(i));
 
 		durations->push_back(display(i));
-
-
-
 	}
 
+
+	/*
+	Display results
+	*/
 	cout << setw(2) << "# of elements" << setw(20 - 2) << "With Checking" << setw(20) << "Without Checking" << endl;
 
 	for (unsigned int i = 0; i < totalElements->size(); i++)
 	{
-		cout << setw(2) << totalElements->at(i) << setw(20) << exceptionDurations->at(i) << setw(20) << durations->at(i) << endl;
-
-
-
+		cout << setw(2) << totalElements->at(i) << setw(20) << checkedDurations->at(i) << setw(20) << durations->at(i) << endl;
 	}
 
 	//garbage collection
 	delete totalElements;
-	delete exceptionDurations;
+	delete checkedDurations;
 	delete durations;
-
-	//interesting way of displaying the contents of a vector
-	//copy(assertDurations->begin(), assertDurations->end(), ostream_iterator<double>(cout, " "));
-
-
-
 
 	system("PAUSE");
 }
@@ -83,10 +90,9 @@ double displayWithChecking(unsigned int n)
 
 	start = clock();
 
-	//Display Vector with checking for out of bound memory reference
-	for (unsigned int i = 0; i <= intVec.size(); i++)
+	//Display vector WITH checking for out of bound memory reference
+	for (unsigned int i = 0; i < intVec.size(); i++)
 	{
-		//assert(i >= 0 && i < intVec.size());
 		if (i >= 0 && i < intVec.size())
 		{
 			cout << intVec[i] << endl;
@@ -95,19 +101,11 @@ double displayWithChecking(unsigned int n)
 		{
 			return -1;
 		}
-
-		/*
-		try {
-		cout << intVec[i] << endl;
-		}
-		catch (const out_of_range& oor) {
-		cerr << "Out of Range error: " << oor.what() << '\n';
-		}
-		*/
 	}
 
 	return (clock() - start) / (double)CLOCKS_PER_SEC;
 }
+
 
 double display(unsigned int n)
 {
@@ -119,6 +117,7 @@ double display(unsigned int n)
 
 	start = clock();
 
+	//Display vector WITH OUT checking for out of bound memory reference
 	for (unsigned int i = 0; i < intVec.size(); i++)
 	{
 		cout << intVec[i] << endl;
